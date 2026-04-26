@@ -13,8 +13,21 @@ dotenv.config();
 console.log("MONGO URI =", process.env.MONGODB_URI);
 
 import connectDB from "./db/index.js";
+import { app } from "./app.js";
 
-connectDB();
+connectDB()
+
+.then(()=>{
+    app.listen(process.env.PORT || 8000 ,()=>{
+        console.log(`Server is running on port ${process.env.PORT || 8000}`)})
+        app.on("error",(error)=>{
+            console.log("Server error",error)
+        })
+    })
+
+.catch((error)=>{
+    console.log("Error connecting to DB",error)
+})
 
 // we use dotenv to load environment variables as soon as possible in our application, 
 // so we can use them in our code
